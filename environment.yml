@@ -1,4 +1,4 @@
-name: OD_benchmark
+name: UADbenchmark
 dependencies:
   - python=3.8
   - numpy
