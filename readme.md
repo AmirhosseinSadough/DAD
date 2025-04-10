@@ -33,9 +33,8 @@ Running Anomaly Detection Methods on the Benchmark
 You can run the benchmarking evaluations using the following commands:
 
 . HPT-based Benchmarking (Hyperparameter Tuning-based):
-<pre> ```bash 
-python main.py benchmark hpt
- ``` </pre>
+<pre> ```bash python main.py benchmark hpt ``` </pre>
+
 . Default Hyperparameter Benchmarking:
 python main.py benchmark default
 
