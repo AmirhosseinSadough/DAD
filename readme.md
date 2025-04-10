@@ -23,17 +23,17 @@ You can cite this work as follows:
 
 To run the various benchmarking methods, you first need to install the required dependencies. For compatibility and isolation of dependencies, we recommend creating a new Anaconda environment using the provided environment.yml file:
 
-1.Create the environment:
+1. Create the environment:
 ```
 conda env create -f environment.yml
 ```
 
-2.Activate the environment:
+2. Activate the environment:
 ```
 conda activate UADbenchmark
 ```
 
-Running Anomaly Detection Methods on the Benchmark
+3. Running Anomaly Detection Methods on the Benchmark
 You can run the benchmarking evaluations using the following commands:
 
 . HPT-based Benchmarking (Hyperparameter Tuning-based):
