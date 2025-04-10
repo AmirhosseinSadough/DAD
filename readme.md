@@ -33,27 +33,28 @@ conda env create -f environment.yml
 conda activate UADbenchmark
 ```
 
-3. Running Anomaly Detection Methods on the Benchmark
+# Running the benchmark
+Running Anomaly Detection Methods on the Benchmark
 You can run the benchmarking evaluations using the following commands:
 
-. HPT-based Benchmarking (Hyperparameter Tuning-based):
+HPT-based Benchmarking (Hyperparameter Tuning-based):
 ```
 python main.py benchmark hpt
 ```
 
-. Default Hyperparameter Benchmarking:
+Default Hyperparameter Benchmarking:
 ```
 python main.py benchmark default
 ```
-. Peak and Average Performance Evaluation (over a set of hyperparameters per method):
+Peak and Average Performance Evaluation (over a set of hyperparameters per method):
 ```
 python main.py benchmark max_mean
 ```
-. Test on Synthetic Dataset:
+Test on Synthetic Dataset:
 ```
 python main.py synthetic
 ```
-. Test on DAMADICS Dataset (Industrial IoT dataset):
+Test on DAMADICS Dataset (Industrial IoT dataset):
 ```
 python main.py damadics
 ```
