@@ -14,61 +14,45 @@ from sklearn.cluster import KMeans
 from matplotlib.patches import Rectangle
 import sys
 
-dataset_mode = "synthetic" # "synthetic", "benchmark", "damadics"
+import argparse
 
-figure_dir = ""
-table_dir = ""
+arg_parser = argparse.ArgumentParser(description='produce figures and tables for the results of the outlier detection methods')
+
+# Add the arguments
+arg_parser.add_argument('--base_result_dir',
+                        dest='base_result_dir',
+                        default="results/benchmark/default",
+                        type=str,
+                        help='Path to the result directory.')
+
+arg_parser.add_argument('--eval_mode',
+                        dest='eval_mode',
+                        default="hpt",
+                        type=str,
+                        help='Evaluation modes:"maximum", "average", "default", "hpt".')
+
+arg_parser.add_argument('--dataset',
+                        dest='dataset',
+                        default="benchmark",
+                        type=str,
+                        help='Dataset mode: benchmark, synthetic, damadics.')
+
+
+# Execute the parse_args() method
+parsed_args = arg_parser.parse_args()
+
+
+result_dir = os.path.join(parsed_args.base_result_dir, "csvresult_dir")
+evaluation_mode = parsed_args.eval_mode 
+dataset_mode = parsed_args.dataset
+
+wc_dir = os.path.join(parsed_args.base_result_dir, "wc_dir")
+figure_dir = os.path.join(parsed_args.base_result_dir, "figures")
+table_dir = os.path.join(parsed_args.base_result_dir, "tables")
+
+
 prune = "datasets"        
-evaluation_mode = "average" # "maximum", "average", "default", "hpt"
-
 excluding_method = ["DECODE"]
-
-if evaluation_mode == "maximum":
-    result_dir = "results_max_mean/csvresult_dir"
-    wc_dir = "results_max_mean/wc_dir"
-    if excluding_method[0] == "DECODE_s":
-        figure_dir = "results_max_mean/maximum/figures_DECODE"
-        table_dir = "results_max_mean/maximum/tables_DECODE"
-    elif excluding_method[0] == "DECODE":
-        figure_dir = "results_max_mean/maximum/figures_DECODE_s"
-        table_dir = "results_max_mean/maximum/tables_DECODE_s"
-elif evaluation_mode == "average":
-    result_dir = "results_max_mean/csvresult_dir"
-    wc_dir = "results_max_mean/wc_dir"
-    if excluding_method[0] == "DECODE_s":
-        figure_dir = "results_max_mean/average/figures_DECODE"
-        table_dir = "results_max_mean/average/tables_DECODE"
-    elif excluding_method[0] == "DECODE":
-        figure_dir = "results_max_mean/average/figures_DECODE_s"
-        table_dir = "results_max_mean/average/tables_DECODE_s"
-elif evaluation_mode == "default":
-    result_dir = "results_default/csvresult_dir"
-    wc_dir = "results_default/wc_dir"
-    if excluding_method[0] == "DECODE_s":
-        figure_dir = "results_default/figures_DECODE"
-        table_dir = "results_default/tables_DECODE"
-    elif excluding_method[0] == "DECODE":
-        figure_dir = "results_default/figures_DECODE_s"
-        table_dir = "results_default/tables_DECODE_s"    
-elif evaluation_mode == "hpt":
-    result_dir = "results_hpt/csvresult_dir"
-    wc_dir = "results_hpt/wc_dir"
-    if excluding_method[0] == "DECODE_s":
-        figure_dir = "results_hpt/figures_DECODE"
-        table_dir = "results_hpt/tables_DECODE"
-    elif excluding_method[0] == "DECODE":
-        figure_dir = "results_hpt/figures_DECODE_s"
-        table_dir = "results_hpt/tables_DECODE_s"    
-
-if dataset_mode == "synthetic":
-    result_dir = "results_synthetic_data/csvresult_dir"
-    wc_dir = "results_synthetic_data/wc_dir"
-elif dataset_mode == "damadics":
-    result_dir = "results_damadics/csvresult_dir"
-    wc_dir = "results_damadics/wc_dir"
-else:
-    result_dir = result_dir
-    wc_dir = wc_dir
     
 os.makedirs(table_dir, exist_ok=True)
 os.makedirs(figure_dir, exist_ok=True)

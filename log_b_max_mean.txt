@@ -1509,3 +1509,369 @@ range(5, 31, 3)
   X                   = torch.tensor(X, dtype=torch.float).to(device)
 /home/amirhossein_sadough/miniconda3/envs/my_env/lib/python3.8/site-packages/sklearn/ensemble/_iforest.py:289: UserWarning: max_samples (1024) is greater than the total number of samples (683). max_samples will be set to n_samples for estimation.
   warn(
+-LUNAR
+{'n_neighbours': 5}
+{'n_neighbours': 10}
+{'n_neighbours': 15}
+{'n_neighbours': 20}
+{'n_neighbours': 25}
+{'n_neighbours': 30}
+-DynamicHBOS
+{}
+______pima.npz______
+-DECODE
+{'lr': 0.8, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.2, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.08, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.02, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.008, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.002, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.0008, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.0002, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-05, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 2e-05, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-06, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-07, 'mom_score': 0.25, 'win_size': 0}
+-DECODE_s
+{'lr': 0.8, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.8, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.2, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.2, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.08, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.08, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.02, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.02, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.008, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.008, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.002, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.002, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.0008, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.0008, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.0002, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.0002, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 8e-05, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-05, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 2e-05, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 2e-05, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 8e-06, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-06, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 8e-07, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-07, 'mom_score': 0.25, 'win_size': 1}
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{'n_components': 2}
+{'n_components': 3}
+{'n_components': 4}
+{'n_components': 5}
+{'n_components': 6}
+{'n_components': 7}
+{'n_components': 8}
+{'n_components': 9}
+{'n_components': 10}
+{'n_components': 11}
+{'n_components': 12}
+{'n_components': 13}
+{'n_components': 14}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 60}
+-COF
+{'n_neighbors': 10}
+{'n_neighbors': 20}
+{'n_neighbors': 30}
+-COPOD
+{}
+-HBOS
+{'n_bins': 'auto'}
+-kNN
+{'method': 'mean', 'n_neighbors': 5}
+{'method': 'mean', 'n_neighbors': 8}
+{'method': 'mean', 'n_neighbors': 11}
+{'method': 'mean', 'n_neighbors': 14}
+{'method': 'mean', 'n_neighbors': 17}
+{'method': 'mean', 'n_neighbors': 20}
+{'method': 'mean', 'n_neighbors': 23}
+{'method': 'mean', 'n_neighbors': 26}
+{'method': 'mean', 'n_neighbors': 29}
+-kth-NN
+{'method': 'largest', 'n_neighbors': 5}
+{'method': 'largest', 'n_neighbors': 8}
+{'method': 'largest', 'n_neighbors': 11}
+{'method': 'largest', 'n_neighbors': 14}
+{'method': 'largest', 'n_neighbors': 17}
+{'method': 'largest', 'n_neighbors': 20}
+{'method': 'largest', 'n_neighbors': 23}
+{'method': 'largest', 'n_neighbors': 26}
+{'method': 'largest', 'n_neighbors': 29}
+-IF
+{'max_samples': 128, 'n_estimators': 1000}
+{'max_samples': 256, 'n_estimators': 1000}
+{'max_samples': 512, 'n_estimators': 1000}
+{'max_samples': 1024, 'n_estimators': 1000}
+-LMDD
+{'dis_measure': 'aad', 'n_iter': 100}
+-LODA
+{'n_bins': 'auto'}
+-ensemble-LOF
+range(5, 31, 3)
+-LOF
+{'n_neighbors': 5}
+{'n_neighbors': 8}
+{'n_neighbors': 11}
+{'n_neighbors': 14}
+{'n_neighbors': 17}
+{'n_neighbors': 20}
+{'n_neighbors': 23}
+{'n_neighbors': 26}
+{'n_neighbors': 29}
+-MCD
+{'assume_centered': True, 'support_fraction': 0.6}
+{'assume_centered': True, 'support_fraction': 0.7}
+{'assume_centered': True, 'support_fraction': 0.8}
+{'assume_centered': True, 'support_fraction': 0.9}
+-OCSVM
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.5}
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.6}
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.7}
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.8}
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.9}
+-PCA
+{'n_components': 0.3}
+{'n_components': 0.5}
+{'n_components': 0.7}
+{'n_components': 0.9}
+-SOD
+{'alpha': 0.7, 'n_neighbors': 20, 'ref_set': 10}
+{'alpha': 0.7, 'n_neighbors': 20, 'ref_set': 18}
+{'alpha': 0.7, 'n_neighbors': 30, 'ref_set': 10}
+{'alpha': 0.7, 'n_neighbors': 30, 'ref_set': 18}
+{'alpha': 0.9, 'n_neighbors': 20, 'ref_set': 10}
+{'alpha': 0.9, 'n_neighbors': 20, 'ref_set': 18}
+{'alpha': 0.9, 'n_neighbors': 30, 'ref_set': 10}
+{'alpha': 0.9, 'n_neighbors': 30, 'ref_set': 18}
+-EIF
+{'extension_level': 1, 'max_samples': 128, 'n_estimators': 1000}
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 1000}
+{'extension_level': 1, 'max_samples': 512, 'n_estimators': 1000}
+{'extension_level': 1, 'max_samples': 1024, 'n_estimators': 1000}
+{'extension_level': 2, 'max_samples': 128, 'n_estimators': 1000}
+{'extension_level': 2, 'max_samples': 256, 'n_estimators': 1000}
+{'extension_level': 2, 'max_samples': 512, 'n_estimators': 1000}
+{'extension_level': 2, 'max_samples': 1024, 'n_estimators': 1000}
+{'extension_level': 3, 'max_samples': 128, 'n_estimators': 1000}
+{'extension_level': 3, 'max_samples': 256, 'n_estimators': 1000}
+{'extension_level': 3, 'max_samples': 512, 'n_estimators': 1000}
+{'extension_level': 3, 'max_samples': 1024, 'n_estimators': 1000}
+-ODIN
+{'n_neighbors': 5}
+{'n_neighbors': 8}
+{'n_neighbors': 11}
+{'n_neighbors': 14}
+{'n_neighbors': 17}
+{'n_neighbors': 20}
+{'n_neighbors': 23}
+{'n_neighbors': 26}
+{'n_neighbors': 29}
+-ECOD
+{}
+-gen2out
+{}
+/home/amirhossein_sadough/miniconda3/envs/my_env/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/home/amirhossein_sadough/miniconda3/envs/my_env/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/miniconda3/envs/my_env/lib/python3.8/site-packages/sklearn/ensemble/_iforest.py:289: UserWarning: max_samples (1024) is greater than the total number of samples (768). max_samples will be set to n_samples for estimation.
+  warn(
+-LUNAR
+{'n_neighbours': 5}
+{'n_neighbours': 10}
+{'n_neighbours': 15}
+{'n_neighbours': 20}
+{'n_neighbours': 25}
+{'n_neighbours': 30}
+-DynamicHBOS
+{}
+______yeast.npz______
+-DECODE
+{'lr': 0.8, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.2, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.08, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.02, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.008, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.002, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.0008, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.0002, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-05, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 2e-05, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-06, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-07, 'mom_score': 0.25, 'win_size': 0}
+-DECODE_s
+{'lr': 0.8, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.8, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.2, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.2, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.08, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.08, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.02, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.02, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.008, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.008, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.002, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.002, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.0008, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.0008, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 0.0002, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 0.0002, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 8e-05, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-05, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 2e-05, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 2e-05, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 8e-06, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-06, 'mom_score': 0.25, 'win_size': 1}
+{'lr': 8e-07, 'mom_score': 0.25, 'win_size': 0}
+{'lr': 8e-07, 'mom_score': 0.25, 'win_size': 1}
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{'n_components': 2}
+{'n_components': 3}
+{'n_components': 4}
+{'n_components': 5}
+{'n_components': 6}
+{'n_components': 7}
+{'n_components': 8}
+{'n_components': 9}
+{'n_components': 10}
+{'n_components': 11}
+{'n_components': 12}
+{'n_components': 13}
+{'n_components': 14}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 60}
+-COF
+{'n_neighbors': 10}
+{'n_neighbors': 20}
+{'n_neighbors': 30}
+-COPOD
+{}
+-HBOS
+{'n_bins': 'auto'}
+-kNN
+{'method': 'mean', 'n_neighbors': 5}
+{'method': 'mean', 'n_neighbors': 8}
+{'method': 'mean', 'n_neighbors': 11}
+{'method': 'mean', 'n_neighbors': 14}
+{'method': 'mean', 'n_neighbors': 17}
+{'method': 'mean', 'n_neighbors': 20}
+{'method': 'mean', 'n_neighbors': 23}
+{'method': 'mean', 'n_neighbors': 26}
+{'method': 'mean', 'n_neighbors': 29}
+-kth-NN
+{'method': 'largest', 'n_neighbors': 5}
+{'method': 'largest', 'n_neighbors': 8}
+{'method': 'largest', 'n_neighbors': 11}
+{'method': 'largest', 'n_neighbors': 14}
+{'method': 'largest', 'n_neighbors': 17}
+{'method': 'largest', 'n_neighbors': 20}
+{'method': 'largest', 'n_neighbors': 23}
+{'method': 'largest', 'n_neighbors': 26}
+{'method': 'largest', 'n_neighbors': 29}
+-IF
+{'max_samples': 128, 'n_estimators': 1000}
+{'max_samples': 256, 'n_estimators': 1000}
+{'max_samples': 512, 'n_estimators': 1000}
+{'max_samples': 1024, 'n_estimators': 1000}
+-LMDD
+{'dis_measure': 'aad', 'n_iter': 100}
+-LODA
+{'n_bins': 'auto'}
+-ensemble-LOF
+range(5, 31, 3)
+-LOF
+{'n_neighbors': 5}
+{'n_neighbors': 8}
+{'n_neighbors': 11}
+{'n_neighbors': 14}
+{'n_neighbors': 17}
+{'n_neighbors': 20}
+{'n_neighbors': 23}
+{'n_neighbors': 26}
+{'n_neighbors': 29}
+-MCD
+{'assume_centered': True, 'support_fraction': 0.6}
+{'assume_centered': True, 'support_fraction': 0.7}
+{'assume_centered': True, 'support_fraction': 0.8}
+{'assume_centered': True, 'support_fraction': 0.9}
+-OCSVM
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.5}
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.6}
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.7}
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.8}
+{'gamma': 'auto', 'kernel': 'rbf', 'nu': 0.9}
+-PCA
+{'n_components': 0.3}
+{'n_components': 0.5}
+{'n_components': 0.7}
+{'n_components': 0.9}
+-SOD
+{'alpha': 0.7, 'n_neighbors': 20, 'ref_set': 10}
+{'alpha': 0.7, 'n_neighbors': 20, 'ref_set': 18}
+{'alpha': 0.7, 'n_neighbors': 30, 'ref_set': 10}
+{'alpha': 0.7, 'n_neighbors': 30, 'ref_set': 18}
+{'alpha': 0.9, 'n_neighbors': 20, 'ref_set': 10}
+{'alpha': 0.9, 'n_neighbors': 20, 'ref_set': 18}
+{'alpha': 0.9, 'n_neighbors': 30, 'ref_set': 10}
+{'alpha': 0.9, 'n_neighbors': 30, 'ref_set': 18}
+-EIF
+{'extension_level': 1, 'max_samples': 128, 'n_estimators': 1000}
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 1000}
+{'extension_level': 1, 'max_samples': 512, 'n_estimators': 1000}
+{'extension_level': 1, 'max_samples': 1024, 'n_estimators': 1000}
+{'extension_level': 2, 'max_samples': 128, 'n_estimators': 1000}
+{'extension_level': 2, 'max_samples': 256, 'n_estimators': 1000}
+{'extension_level': 2, 'max_samples': 512, 'n_estimators': 1000}
+{'extension_level': 2, 'max_samples': 1024, 'n_estimators': 1000}
+{'extension_level': 3, 'max_samples': 128, 'n_estimators': 1000}
+{'extension_level': 3, 'max_samples': 256, 'n_estimators': 1000}
+{'extension_level': 3, 'max_samples': 512, 'n_estimators': 1000}
+{'extension_level': 3, 'max_samples': 1024, 'n_estimators': 1000}
+-ODIN
+{'n_neighbors': 5}
+{'n_neighbors': 8}
+{'n_neighbors': 11}
+{'n_neighbors': 14}
+{'n_neighbors': 17}
+{'n_neighbors': 20}
+{'n_neighbors': 23}
+{'n_neighbors': 26}
+{'n_neighbors': 29}
+-ECOD
+{}
+-gen2out
+{}
+/home/amirhossein_sadough/miniconda3/envs/my_env/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/home/amirhossein_sadough/miniconda3/envs/my_env/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+-LUNAR
+{'n_neighbours': 5}
+{'n_neighbours': 10}
+{'n_neighbours': 15}
+{'n_neighbours': 20}
+{'n_neighbours': 25}
+{'n_neighbours': 30}
+-DynamicHBOS
+{}
+Executing runs/run_benchmark_max_mean.py with dataset path 'datasets/benchmark' and result path 'results/benchmark/max_mean'...
