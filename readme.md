@@ -18,4 +18,6 @@ You can cite this work as follows:
   url     = {}
 }
 
+# Installation
+To run the various benchmarking methods, you first need to install the required dependencies. For compatibility and isolation of dependencies, we recommend creating a new Anaconda environment using the provided environment.yml file:
 
