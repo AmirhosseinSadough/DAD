@@ -1,0 +1,525 @@
+Device:  cpu
+False
+______hepatitis.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/miniconda3/envs/my_env/lib/python3.8/site-packages/threadpoolctl.py:1214: RuntimeWarning: 
+Found Intel OpenMP ('libiomp') and LLVM OpenMP ('libomp') loaded at
+the same time. Both libraries are known to be incompatible and this
+can cause random crashes or deadlocks on Linux when loaded in the
+same Python program.
+Using threadpoolctl may cause crashes or deadlocks. For more
+information and possible workarounds, please see
+    https://github.com/joblib/threadpoolctl/blob/master/multiple_openmp.md
+
+  warnings.warn(msg, RuntimeWarning)
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/miniconda3/envs/my_env/lib/python3.8/site-packages/sklearn/covariance/_robust_covariance.py:183: RuntimeWarning: Determinant has increased; this should not happen: log(det) > log(previous_det) (-26.495814606128619 > -44.103707719857596). You may want to try with a higher value of support_fraction (current value: 0.517).
+  warnings.warn(
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+/home/amirhossein_sadough/outlierdetection/runs/additional_methods/wrappers/DECODE_Auto.py:72: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  X                   = torch.tensor(X, dtype=torch.float).to(device)
+-DynamicHBOS
+{}
+______vertebral.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+-DynamicHBOS
+{}
+______wine.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+-DynamicHBOS
+{}
+______glass.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+-DynamicHBOS
+{}
+______wbc2.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+-DynamicHBOS
+{}
+______parkinson.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+-DynamicHBOS
+{}
+______wpbc.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+-DynamicHBOS
+{}
+______breastw.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+-DynamicHBOS
+{}
+______pima.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+-DynamicHBOS
+{}
+______yeast.npz______
+-DECODE_Auto
+{}
+-INNE
+{}
+-GMM
+{}
+-KDE
+{}
+-ABOD
+{'method': 'fast', 'n_neighbors': 10}
+-COF
+{'n_neighbors': 20}
+-COPOD
+{}
+-HBOS
+{}
+-kNN
+{}
+-IF
+{}
+-LMDD
+{}
+-LODA
+{}
+-LOF
+{}
+-MCD
+{}
+-OCSVM
+{}
+-PCA
+{}
+-SOD
+{}
+-ECOD
+{}
+-LUNAR
+{}
+-ensemble-LOF
+range(5, 31, 3)
+-EIF
+{'extension_level': 1, 'max_samples': 256, 'n_estimators': 100}
+-ODIN
+{}
+-gen2out
+{}
+-DynamicHBOS
+{}
+Executing runs/run_benchmark_default.py with dataset path 'datasets/benchmark' and result path 'results/benchmark/default'...

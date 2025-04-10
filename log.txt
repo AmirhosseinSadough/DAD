@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "runs/run_damadics.py", line 14, in <module>
+    from outlierdetection.runs.evaluation_metrics import adjusted_precision_n_scores, adjusted_average_precision
+ModuleNotFoundError: No module named 'outlierdetection'
+Executing runs/run_damadics.py with dataset path 'datasets/damadics' and result path 'results/damadics/max_mean'...
