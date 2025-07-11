@@ -1,4 +1,4 @@
-# DECODE: Real-Time Decorrelation-Based Anomaly Detection
+# DAD: Real-Time Decorrelation-Based Anomaly Detection for Multivariate Time Series
 
 This repository extends the benchmarking framework proposed in [Outlier Detection: Benchmarking Methods and Evaluation Criteria](https://jmlr.org/papers/v25/23-0570.html) and its corresponding GitHub repository: [outlierdetection](https://github.com/RoelBouman/outlierdetection). Our extension introduces evaluations based on a new benchmarking approach, **Hyperparameter Tuning-based (HPT-based)** benchmarking, along with default hyperparameter settings and peak performance evaluations.
 
