@@ -7,15 +7,14 @@ Additionally, we have incorporated synthetic datasets and an IIoT dataset (DAMAD
 You can cite this work as follows:
 
 ```bibtex
-@article{DECODE_draft,
-  author  = {Amirhossein Sadough and Mahyar Shahsavari and Mark Wijtvliet, Marcel van Gerven},
-  title   = {DECODE: Real-Time Decorrelation-Based Anomaly Detection Method for Multivariate Time Series},
-  journal = {},
-  year    = {},
-  volume  = {},
-  number  = {},
-  pages   = {},
-  url     = {}
+@misc{sadough2025realtimedecorrelationbasedanomalydetection,
+      title={Real-Time Decorrelation-Based Anomaly Detection for Multivariate Time Series}, 
+      author={Amirhossein Sadough and Mahyar Shahsavari and Mark Wijtvliet and Marcel van Gerven},
+      year={2025},
+      eprint={2507.07559},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2507.07559}, 
 }
 ```
 
