@@ -8,6 +8,6 @@ Our method integrates into the [TSB-AD](https://github.com/TheDatumOrg/TSB-AD) c
 
 **Note on DAD_Auto.** Unlike the manually tuned DAD variant, DAD_Auto requires no hyperparameter tuning. It self-initializes via SearchLR from a short warm-up prefix of each series and is therefore run directly on the 180-series evaluation set, skipping the benchmark's tuning protocol.
 
-**Reproducing the paper's figures and tables.** The TSB-AD-M figures and tables reported in our paper can be regenerated with [`produce_figs_tabs.ipynb`](https://github.com/AmirhosseinSadough/DAD/blob/master/Benchmarks/TSB-AD-M/produce_figs_tabs.ipynb).
+**Reproducing our DAD paper's figures and tables.** Regenerate the TSB-AD-M results reported in our paper with [`produce_figs_tabs.ipynb`](https://github.com/AmirhosseinSadough/DAD/blob/master/Benchmarks/TSB-AD-M/produce_figs_tabs.ipynb).
 
 For full details on the benchmark, its datasets, and evaluation measures, see the TSB-AD paper, Liu and Paparrizos, *The Elephant in the Room: Towards a Reliable Time-Series Anomaly Detection Benchmark*, NeurIPS 2024 ([paper](https://proceedings.neurips.cc/paper_files/paper/2024/file/c3f3c690b7a99fba16d0efd35cb83b2c-Paper-Datasets_and_Benchmarks_Track.pdf)), and the [TSB-AD repository](https://github.com/TheDatumOrg/TSB-AD).
