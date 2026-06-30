@@ -1,0 +1,24 @@
+name: DAD
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - libstdcxx-ng 
+  - numpy
+  - pandas
+  - scikit-learn=1.0.2
+  - scikit_posthocs
+  - matplotlib
+  - seaborn
+  - scipy
+  - cvxopt
+  - pytorch
+  - pip
+  - pip:
+    - cython
+    - tensorflow
+    - pyod
+    - combo
+    - tqdm
+    - rrcf
