@@ -22,7 +22,7 @@ You can cite this work as follows:
 
 Real-time anomaly detection on multivariate sensor streams, common in the (Industrial) Internet of Things, must run under strict compute and memory budgets, process each observation as it arrives, and stay effective as the number of channels grows. DAD meets these requirements by continuously learning a **decorrelation matrix** that captures the evolving correlation structure of the stream. It updates sample-wise without storing past observations and flags anomalies from the residual correlations that emerge when the learned structure no longer explains the incoming data, while adapting to nominal distributional drift through a single interpretable learning-rate parameter.
 
-To remove manual configuration, we introduce **SearchLR**, a label-free self-initialization procedure that estimates the learning rate and initial decorrelation matrix from a short warm-up prefix of each stream. The resulting **DAD_Auto** variant deploys with no offline training, no labeled data, and no manual hyperparameter tuning.
+To remove manual configuration, we introduce **SearchLR**, a label-free self-initialization procedure that estimates the learning rate and initial decorrelation matrix from a short warm-up prefix of each stream, so DAD deploys with no offline training, no labeled data, and no manual hyperparameter tuning.
 
 We validate DAD on synthetic, real-world tabular, and real-world streaming (TSB-AD-M) benchmarks, where it achieves a leading accuracy-efficiency trade-off, ranking among the top detectors while operating at up to several orders of magnitude fewer computations and parameters than competing methods.
 
