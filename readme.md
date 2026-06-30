@@ -1,6 +1,6 @@
 # DAD: Real-Time Decorrelation-Based Anomaly Detection for Multivariate Time Series
 
-Official implementation of **DAD**, a fully unsupervised, real-time anomaly detector for multivariate time series, and its self-configuring variant **DAD_Auto**.
+Official implementation of **DAD**, an unsupervised, real-time anomaly detector for multivariate time series.
 
 📄 **Paper:** [Real-Time Decorrelation-Based Anomaly Detection for Multivariate Time Series](https://arxiv.org/abs/2507.07559) (arXiv:2507.07559)
 
@@ -27,3 +27,19 @@ To remove manual configuration, we introduce **SearchLR**, a label-free self-ini
 We validate DAD on synthetic, real-world tabular, and real-world streaming (TSB-AD-M) benchmarks, where it achieves a leading accuracy-efficiency trade-off, ranking among the top detectors while operating at up to several orders of magnitude fewer computations and parameters than competing methods.
 
 ## Repository structure
+
+- **[`Implementation/`](Implementation)** — `DAD.py`, the core algorithm, including the online decorrelation update and the SearchLR initialization.
+- **[`Benchmarks/Synthetic&Tabular/`](Benchmarks/Synthetic%26Tabular)** — reproduces the synthetic and tabular results, built on an extended outlier-detection framework. Setup and run commands are in its [README](Benchmarks/Synthetic%26Tabular).
+- **[`Benchmarks/TSB-AD-M/`](Benchmarks/TSB-AD-M)** — reproduces the streaming results by integrating DAD into the [TSB-AD](https://github.com/TheDatumOrg/TSB-AD) benchmark. Integration steps and the figure/table notebook are in its [README](Benchmarks/TSB-AD-M).
+
+## Reproducing the paper
+
+The two benchmark folders cover the three evaluation settings from the paper:
+
+| Setting | Folder |
+|---|---|
+| Synthetic | [`Benchmarks/Synthetic&Tabular/`](Benchmarks/Synthetic%26Tabular) |
+| Real-world tabular | [`Benchmarks/Synthetic&Tabular/`](Benchmarks/Synthetic%26Tabular) |
+| Real-world streaming (TSB-AD-M) | [`Benchmarks/TSB-AD-M/`](Benchmarks/TSB-AD-M) |
+
+Follow the README in each folder for environment setup, evaluation commands, and figure/table reproduction.
