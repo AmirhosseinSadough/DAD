@@ -99,6 +99,7 @@ Multi_algo_HP_dict = {
     },
     "DAD": {"mom_score": [0.25], "lr": [0.8, 0.5, 0.2, 8e-2, 5e-2, 2e-2, 8e-3, 5e-3, 2e-3, 8e-4, 5e-4, 2e-4, 8e-5, 5e-5, 2e-5, 8e-6, 8e-7]},
     'DAD_Auto': {},
+    'DAD_Auto_Passive': {},
 
 }
 
@@ -136,6 +137,7 @@ Optimal_Multi_algo_HP_dict = {
     'StreamVAE': {'win_size': 100, 'latent_dim': 64, 'batch_size': 128, 'epochs': 50, 'patience': 10, 'lr': 1e-3, 'validation_size': 0.2, 'target_kl': 100.0, 'event_l1_weight': 1e-3},
     'DAD': {"mom_score": 0.25, "lr": 5e-05},
     'DAD_Auto': {},
+    'DAD_Auto_Passive': {},
 
 }
 

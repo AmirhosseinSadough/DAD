@@ -5,7 +5,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 from .utils.slidingWindows import find_length_rank
 
-Unsupervise_AD_Pool = ['DAD', 'DAD_Auto', 'FFT', 'SR', 'NORMA', 'Series2Graph', 'Sub_IForest', 'IForest', 'LOF', 'Sub_LOF', 'POLY', 'MatrixProfile', 'Sub_PCA', 'PCA', 'HBOS',
+Unsupervise_AD_Pool = ['DAD', 'DAD_Auto', 'DAD_Auto_Passive', 'FFT', 'SR', 'NORMA', 'Series2Graph', 'Sub_IForest', 'IForest', 'LOF', 'Sub_LOF', 'POLY', 'MatrixProfile', 'Sub_PCA', 'PCA', 'HBOS',
                         'Sub_HBOS', 'KNN', 'Sub_KNN','KMeansAD', 'KMeansAD_U', 'KShapeAD', 'COPOD', 'CBLOF', 'COF', 'EIF', 'RobustPCA', 'MMPAD', 'Lag_Llama', 'TimesFM', 'Chronos', 'MOMENT_ZS', 'TSPulse_ZS', 'Time_RCD']
 Semisupervise_AD_Pool = ['Left_STAMPi', 'SAND', 'MCD', 'Sub_MCD', 'OCSVM', 'Sub_OCSVM', 'AutoEncoder', 'CNN', 'LSTMAD', 'TranAD', 'USAD', 'OmniAnomaly', 'PatchTST',
                         'AnomalyTransformer', 'TimesNet', 'FITS', 'Donut', 'OFA', 'MOMENT_FT', 'M2N2', 'TSPulse_FT', 'xLSTMAD', 'CHARM', 'StreamVAE']
@@ -579,6 +579,27 @@ def run_DAD_Auto(data):
     clf = DAD(mode="auto",
                data_type="streaming", 
                lr_reduction=0.0001, 
+               hpo_max_epochs=20, 
+               hpo_max_lr=0.8, 
+               hpo_patience=5, 
+               hpo_n=50, 
+               mom_score=0.2, 
+               hpo_lr=5e-1, 
+               hpo_loglr=1.0e-6, 
+               normalize=True)
+    
+    clf.fit(data)
+    score = clf.decision_scores_
+
+    return score.ravel()
+
+
+def run_DAD_Auto_Passive(data):
+    from .models.DAD import DAD
+
+    clf = DAD(mode="auto",
+               data_type="streaming", 
+               lr_reduction=0.0, 
                hpo_max_epochs=20, 
                hpo_max_lr=0.8, 
                hpo_patience=5, 
