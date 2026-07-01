@@ -24,7 +24,7 @@ Real-time anomaly detection on multivariate sensor streams, common in the (Indus
 
 To remove manual configuration, we introduce **SearchLR**, a label-free self-initialization procedure that estimates the learning rate and initial decorrelation matrix from a short warm-up prefix of each stream, so DAD deploys with no offline training, no labeled data, and no manual hyperparameter tuning.
 
-We validate DAD on synthetic, real-world tabular, and real-world streaming (TSB-AD-M) benchmarks, where it achieves a leading accuracy-efficiency trade-off, ranking among the top detectors while operating at up to several orders of magnitude fewer computations and parameters than competing methods.
+We validate DAD on synthetic, real-world tabular, and real-world streaming (TSB-AD-M) benchmarks, where it achieves a leading accuracy-efficiency trade-off, ranking among the top detectors.
 
 ## Repository structure
 

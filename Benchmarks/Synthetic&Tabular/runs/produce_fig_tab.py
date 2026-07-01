@@ -171,8 +171,6 @@ wallclock_dfs = {}
 wallclock_metric = 'S'
 
 for evaluation_metric in evaluation_metrics:
-    # metric_dfs[evaluation_metric] = pd.DataFrame(index=methods,columns=datasets)
-    # full_metric_dfs[evaluation_metric] = pd.DataFrame(index=methods,columns=datasets)
     metric_dfs[evaluation_metric] = pd.DataFrame(index=list(methods), columns=datasets)
     full_metric_dfs[evaluation_metric] = pd.DataFrame(index=list(methods), columns=datasets)
     wallclock_dfs[wallclock_metric] = pd.DataFrame(index=list(methods),columns=datasets)
@@ -195,7 +193,6 @@ for dataset_name in datasets:
                 
                 full_path_filename = os.path.join(result_folder_path, hyperparameter_csv)
                 
-                #results_per_setting[hyperparameter_setting] = pickle.load(open(full_path_filename, 'rb'))
                 results_per_setting[hyperparameter_setting] = pd.read_csv(full_path_filename)
 
             wc_per_setting = {}
@@ -223,22 +220,13 @@ for dataset_name in datasets:
                 wallclock_dfs[wallclock_metric][dataset_name][method_name] = average_time
         
 #%% optional: filter either datasets or methods for which not all methods are in:
-    # Also filter blacklisted items.
-
-
         
 for evaluation_metric in evaluation_metrics:
-    #metric_dfs[evaluation_metric].drop(method_blacklist, axis=0, inplace=True, errors="ignore")
-    #metric_dfs[evaluation_metric].drop(dataset_blacklist,axis=1,inplace=True, errors="ignore")
-        
+       
     if prune == "methods":
-        metric_dfs[evaluation_metric].dropna(axis=0, inplace=True)#drop columns first, as datasets are processed in inner loop, methods in outer..
+        metric_dfs[evaluation_metric].dropna(axis=0, inplace=True)
     elif prune == "datasets":
-        metric_dfs[evaluation_metric].dropna(axis=1, inplace=True)#drop columns first, as datasets are processed in inner loop, methods in outer..
-    #elif prune == "running":
-        #running_dataset = metric_dfs[evaluation_metric].isna().sum().idxmax() 
-        #metric_dfs[evaluation_metric].drop(running_dataset, axis=1, inplace=True)
-        #metric_dfs[evaluation_metric].dropna(axis=0, inplace=True)#drop columns first, as datasets are processed in inner loop, methods in outer..
+        metric_dfs[evaluation_metric].dropna(axis=1, inplace=True)
     metric_dfs[evaluation_metric].rename(columns=rename_datasets, inplace=True)
 
 
@@ -250,7 +238,6 @@ for wallclock_met in wallclock_metric:
     wallclock_dfs[wallclock_met].rename(columns=rename_datasets, inplace=True)
 
 
-# check in metric_dfs and change name kNN to $k$NN and kth-NN to $k$th-NN
 for evaluation_metric in evaluation_metrics:
     if "kNN" in metric_dfs[evaluation_metric].index:
         metric_dfs[evaluation_metric].rename(index={"kNN":"$k$-NN"}, inplace=True)
@@ -260,6 +247,8 @@ for evaluation_metric in evaluation_metrics:
         metric_dfs[evaluation_metric].rename(index={"ensemble-LOF":"ELOF"}, inplace=True)
     if "DynamicHBOS" in metric_dfs[evaluation_metric].index:
         metric_dfs[evaluation_metric].rename(index={"DynamicHBOS":"DHBOS"}, inplace=True)   
+    if "DAD_Auto" in metric_dfs[evaluation_metric].index:
+        metric_dfs[evaluation_metric].rename(index={"DAD_Auto":"DAD$_{Auto}$"}, inplace=True)
 
 for wallclock_met in wallclock_metric:
     if "kNN" in wallclock_dfs[wallclock_met].index:
@@ -270,21 +259,21 @@ for wallclock_met in wallclock_metric:
         wallclock_dfs[wallclock_met].rename(index={"ensemble-LOF":"ELOF"}, inplace=True)
     if "DynamicHBOS" in wallclock_dfs[wallclock_met].index:
         wallclock_dfs[wallclock_met].rename(index={"DynamicHBOS":"DHBOS"}, inplace=True)
+    if "DAD_Auto" in wallclock_dfs[wallclock_met].index:
+        wallclock_dfs[wallclock_met].rename(index={"DAD_Auto":"DAD$_{Auto}$"}, inplace=True)
 
 
 
 df = metric_dfs["ROC/AUC"]
 
-if "DADS" in df.index and "DAD" in df.index:
-    ordered_methods = ["DADS", "DAD"] + [m for m in df.index if m not in ["DADS", "DAD"]]
-elif "DAD_Auto" in df.index:
-    ordered_methods = ["DAD_Auto"] + [m for m in df.index if m not in ["DAD_Auto"]]
+if "DAD" in df.index and "DAD$_{Auto}$" in df.index:
+    ordered_methods = ["DAD", "DAD$_{Auto}$"] + [m for m in df.index if m not in ["DAD", "DAD$_{Auto}$"]]
+else :
+    ordered_methods = list(df.index)
 
 df = df.loc[ordered_methods]
-
 df = df[sorted(df.columns)]
 
-# Split columns into two halves
 half = len(df.columns) // 2
 df1 = df.iloc[:, :half]
 df2 = df.iloc[:, half:]
@@ -292,7 +281,6 @@ df2 = df.iloc[:, half:]
 def truncate_to_2(x):
     return np.floor(x * 100) / 100
 
-# Step 6: Function to bold max after truncation
 def format_bold_max_truncate(df):
     formatted_df = df.copy()
     for col in df.columns:
@@ -307,12 +295,9 @@ def format_bold_max_truncate(df):
         )
     return formatted_df.astype(str)
 
-# Apply formatting
 df1_fmt = format_bold_max_truncate(df1)
 df2_fmt = format_bold_max_truncate(df2)
 
-
-# Convert to LaTeX
 latex_table1 = df1_fmt.to_latex(
     index=True,
     escape=False,
@@ -332,8 +317,6 @@ with open(f"{table_dir}/AUC_method_dataset_part1.tex", "w") as f:
 with open(f"{table_dir}/AUC_method_dataset_part2.tex", "w") as f:
     f.write(latex_table2)
 
-
-
 #%%
 score_df_2 = metric_dfs["ROC/AUC"]
 wallclock_df_2 = wallclock_dfs[wallclock_metric] 
@@ -350,23 +333,19 @@ else:
     auc_label = 'AUC'
     time_label = 'wall-clock time (seconds)'
 
-# Melt DataFrames to long format
 plot_df = scaled_df.melt(var_name="dataset", ignore_index=False).reset_index().rename(columns={"index": "method", "value": "auc"})
 plot_wallclock_df = scaled_wallclock_df.melt(var_name="dataset", ignore_index=False).reset_index().rename(columns={"index": "method", "value": "time"})
 
 combined_df = pd.merge(plot_df, plot_wallclock_df, on=['method', 'dataset'])
 
-# Compute median AUC and average wall-clock time for each method
 method_stats = combined_df.groupby('method').agg({
     'auc': 'median',
     'time': 'mean'
 }).reset_index()
 method_stats.columns = ['method', 'auc_median', 'time_avg']
-# Pivot data for clustering
 auc_pivot = combined_df.pivot(index='dataset', columns='method', values='auc').fillna(0)
 time_pivot = combined_df.pivot(index='dataset', columns='method', values='time').fillna(0)
 
-# Function to estimate optimal number of clusters using Elbow Method
 def estimate_clusters(data, max_clusters=10):
     inertias = []
     for k in range(1, max_clusters + 1):
@@ -374,29 +353,24 @@ def estimate_clusters(data, max_clusters=10):
         kmeans.fit(data)
         inertias.append(kmeans.inertia_)
     
-    # Find the "elbow" by calculating the second derivative (acceleration)
     diffs = np.diff(inertias)
     diffs2 = np.diff(diffs)
     optimal_k = np.argmax(diffs2) + 2  # +2 because diff reduces length and we want k, not index
     return optimal_k, inertias
 
-# Estimate clusters for AUC and Time
 max_clusters = min(len(auc_pivot.T), 10)  # Limit by number of methods or 10
 optimal_k_auc, auc_inertias = estimate_clusters(auc_pivot.T, max_clusters)
 optimal_k_time, time_inertias = estimate_clusters(time_pivot.T, max_clusters)
 
-# Perform clustering with optimal number of clusters
 kmeans_auc = KMeans(n_clusters=optimal_k_auc, random_state=42)
 method_stats['auc_cluster'] = kmeans_auc.fit_predict(auc_pivot.T)
 
 kmeans_time = KMeans(n_clusters=optimal_k_time, random_state=42)
 method_stats['time_cluster'] = kmeans_time.fit_predict(time_pivot.T)
 
-# Define cluster colors (extendable for variable cluster numbers)
 auc_colors = sns.color_palette("Pastel1", optimal_k_auc)
 time_colors = sns.color_palette("Pastel2", optimal_k_time)
 
-# Create the scatter plot
 fig, ax = plt.subplots(figsize=(14, 10))
 fig.patch.set_facecolor('white')  
 ax.set_facecolor('white')  
@@ -414,13 +388,8 @@ ax.spines['right'].set_linewidth(0.5)
 for idx, row in method_stats.iterrows():
     print(f"Method: {row['method']}, Median AUC: {row['auc_median']}, Average Time: {row['time_avg']}")
 
-
-
-# Plot scatter points
 for idx, row in method_stats.iterrows():
-    # if row['method'] in ['DADS', '$k$th-NN']:
-    #     print(row['method'], row['auc_median'], row['time_avg'])
-    if row['method'] in ['DAD', 'DADS']:
+    if row['method'] in ['DAD', 'DAD$_{Auto}$']:
         plt.scatter(row['time_avg'], row['auc_median'], color=sns.color_palette("husl", len(method_stats))[idx],
                     s=350, alpha=1.0, edgecolor='black', linewidth=4, zorder=2)
     else:
@@ -434,19 +403,14 @@ for idx, row in method_stats.iterrows():
         plt.text(row['time_avg'] + 0.1*row['time_avg'], row['auc_median'] - 1.3, row['method'], fontsize=27, ha='left', va='bottom', 
                 color='black', transform=ax.transData, zorder=3)
         
-# Customize the plot
 plt.xlabel(time_label, fontsize=36)
 plt.ylabel(auc_label, fontsize=36)
 plt.tick_params(axis='both', labelsize=32)
-
 plt.grid(True, which='both', linestyle='--', linewidth=0.7, color='gray')
 plt.gca().xaxis.set_minor_locator(plt.MultipleLocator(0.2))
-
-plt.xscale('log')  # Uncomment if log scale is needed for time
-
+plt.xscale('log') 
 plt.tight_layout()
 
-# Save the main plot
 plt.savefig(f"{figure_dir}/median_auc_vs_avg_time_auto_clusters.eps", format="eps", bbox_inches="tight")
 plt.savefig(f"{figure_dir}/median_auc_vs_avg_time_auto_clusters.png", format="png", bbox_inches="tight")
 plt.savefig(f"{figure_dir}/median_auc_vs_avg_time_auto_clusters.pdf", format="pdf", bbox_inches="tight")
@@ -456,7 +420,7 @@ temp_df = metric_dfs["ROC/AUC"]
 low_max_datasets= temp_df.columns[temp_df.max() < 0.6]
 
 invertable_datasets = temp_df.columns[np.logical_and(temp_df.max() < 0.6, temp_df.min() < 0.4)]
-#list minima:
+
 print("invertable datasets:")
 print(invertable_datasets)
 print("minima:")
@@ -487,40 +451,9 @@ def p_value_to_string(p_value, n_decimals):
     else:
         return str(round(p_value, n_decimals))
 
-#def p_value_marker(val):
-
-
-#    bold = 'bold' if float(val) < 0.05 else ''
-
-
-#    return 'font-weight: %s' % bold
 n_decimals = 3
 
 score_df = metric_dfs["ROC/AUC"]
-# n_columns_first_half = int(len(score_df.columns)/2)
-
-# header = ["\\rot{"+column+"}" for column in score_df.columns[:n_columns_first_half]]
-# table_file = open(f"{table_dir}/AUC_all_datasets_first_half.tex","w")
-
-# # Create header only for columns that exist in score_df
-# header = [f"\\rot{{{col}}}" for col in score_df.columns if col in header]
-
-# # Ensure the correct number of headers
-# if len(header) == len(score_df.columns):
-#     # Now you can export the LaTeX table
-#     score_df.iloc[:, :n_columns_first_half].astype(float).round(2).to_latex(table_file, header=header, escape=False)
-# else:
-#     print("Column/header mismatch, please check alignment.")
-
-# print(score_df.columns)
-
-# score_df.iloc[:,:n_columns_first_half].astype(float).round(2).to_latex(table_file, header=header, escape=False)
-# table_file.close()
-
-# header = ["\\rot{"+column+"}" for column in score_df.columns[n_columns_first_half:]]
-# table_file = open(f"{table_dir}/AUC_all_datasets_second_half.tex","w")
-# score_df.iloc[:,n_columns_first_half:].astype(float).round(2).to_latex(table_file, header=header, escape=False)
-# table_file.close()
 
 
 rank_df = score_to_rank(score_df)
@@ -574,34 +507,10 @@ table_file.close()
 
 #%% plot average percentage of maximum for all datasets
 
-# scaled_df = score_df/score_df.max()*100
-
-# reordered_index_all = score_df.transpose().mean().sort_values(ascending=False).index
-
-# palette = dict(zip(reordered_index_all, sns.color_palette("husl", n_colors=len(reordered_index_all))))
-
-# plot_df = (scaled_df).melt(var_name="dataset", ignore_index=False).reset_index().rename(columns={"index":"method"})
-# plt.figure()
-# ax = sns.boxplot(x="method",y="value",data=plot_df, order=reordered_index_all, palette=palette)
-# labels = ax.get_xticklabels()
-# for label in labels:
-#     if label.get_text() == "DAD" or label.get_text() == "DADS":
-#         label.set_fontweight('bold') 
-#         label.set_fontsize(12)       
-# ax.set_xticklabels(labels)
-# ax.set_title("Percentage of maximum AUC performance")
-# plt.xticks(rotation=90)
-# plt.tight_layout()
-# plt.savefig(f"{figure_dir}/ROCAUC_boxplot_all_datasets.eps",format="eps")
-# plt.savefig(f"{figure_dir}/ROCAUC_boxplot_all_datasets.png",format="png")
-# plt.savefig(f"{figure_dir}/ROCAUC_boxplot_all_datasets.pdf",format="pdf")
-# plt.show()
 
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# --- Data Preparation ---
-# scaled_df = (score_df / score_df.max()) * 100
 scaled_df = score_df
 reordered_index_all = (
     score_df.transpose().mean().sort_values(ascending=False).index.to_list()
@@ -645,16 +554,8 @@ ax = sns.boxplot(
 for spine in ["top", "bottom", "left", "right"]:
     ax.spines[spine].set_visible(True)
     ax.spines[spine].set_color("black")
-    ax.spines[spine].set_linewidth(1.0)  # Adjust thickness if desired
-# --- Styling & Typography ---
-# Apply the formatting directly using plt.xticks to bypass the FixedLocator warning
-# plt.xticks(
-#     ticks=range(len(reordered_index_all)),
-#     labels=reordered_index_all,
-#     rotation=90,
-#     fontsize=12,
-# )
-# rename DAD_Auto to DAD$_{Auto}$ in the x-axis labels
+    ax.spines[spine].set_linewidth(1.0)  
+
 new_labels = ["DAD$_{Auto}$" if label == "DAD_Auto" else label for label in reordered_index_all
 ]
 plt.xticks(
@@ -664,18 +565,13 @@ plt.xticks(
     fontsize=12,
 )
 for tick in ax.get_xticklabels():
-    if tick.get_text() in ["DAD", "DADS", "DAD$_{Auto}$"]:
+    if tick.get_text() in ["DAD", "DAD$_{Auto}$"]:
         tick.set_fontweight("bold")
 
-# remove "method" from the x-axis label
 ax.set_xlabel("")
 
-# Labels and Title
 plt.ylabel("AUC", fontsize=12)
-# ax.set_title("Percentage of maximum AUC performance", fontsize=14)
 
-# --- Save and Show (Updated to fix tight_layout & EPS transparency warnings) ---
-# bbox_inches='tight' does a better job than plt.tight_layout() and prevents layout warnings
 plt.savefig(
     f"{figure_dir}/ROCAUC_boxplot_all_datasets.eps",
     format="eps",
@@ -697,63 +593,6 @@ plt.savefig(
 plt.show()
 
 
-
-# import seaborn as sns
-# import matplotlib.pyplot as plt
-
-# rank_list = sorted_mean_df.index[:]
-
-# fig, ax = plt.subplots(1, 1, figsize=(8.6, 4.5))
-# sns.reset_orig()
-# rank_list = sorted_mean_df.index.to_list()
-
-# df_acc = df_VUS_PR
-
-# df_acc_plot = df_acc.rename(
-#     columns={
-#         "DAD_Auto": "DAD$_{Auto}$",
-#         "DAD": "DAD",
-#     }
-# )
-
-# rank_list_plot = [
-#     "DAD$_{Auto}$" if x == "DAD_Auto" else  x
-#     for x in rank_list
-# ]
-
-# ax = sns.boxplot(
-#     data=df_acc_plot[rank_list_plot],
-#     showfliers=False,
-#     meanprops=dict(color='k', linestyle='--'),
-#     showmeans=True,
-#     meanline=True
-# )
-# # boldface for DAD variants
-# for tick in ax.get_xticklabels():
-#     if tick.get_text() in ["DAD$_{Auto}$", "DAD", "DADS"]:
-#         tick.set_fontweight("bold")
-
-# plt.xticks(ticks=range(len(rank_list_plot)), labels=rank_list_plot, rotation=90, fontsize=12)
-# plt.ylabel('VUS-PR', fontsize=12)
-# plt.tight_layout()
-
-# plt.figure()
-# palette = dict(zip(reordered_index_all, sns.color_palette("husl", n_colors=len(reordered_index_all))))
-# ax = sns.violinplot(x="method", y="value", data=plot_df, order=reordered_index_all, palette=palette, inner=None)
-# sns.stripplot(x="method", y="value", data=plot_df, order=reordered_index_all, color="black", size=2, alpha=0.35, ax=ax)
-# labels = ax.get_xticklabels()
-# for label in labels:
-#     if label.get_text() == "DAD" or label.get_text() == "DADS":
-#         label.set_fontweight('bold')
-#         label.set_fontsize(12)
-# ax.set_xticklabels(labels)
-# ax.set_title("Percentage of maximum AUC performance")
-# plt.xticks(rotation=90)
-# plt.tight_layout()
-# plt.savefig(f"{figure_dir}/ROCAUC_violin_all_datasets.eps", format="eps")
-# plt.savefig(f"{figure_dir}/ROCAUC_violin_all_datasets.png", format="png")
-# plt.savefig(f"{figure_dir}/ROCAUC_violin_all_datasets.pdf", format="pdf")
-# plt.show()
 from matplotlib.patches import PathPatch
 
 fig, ax = plt.subplots(figsize=(6, 3))
@@ -781,15 +620,12 @@ for i, method in enumerate(reordered_index_all):
 
 labels = ax.get_xticklabels()
 for label in labels:
-    if label.get_text() == "DAD" or label.get_text() == "DADS":
+    if label.get_text() == "DAD" or label.get_text() == "DAD$_{Auto}$":
         label.set_fontweight('bold')
         label.set_fontsize(12)
 ax.set_xticklabels(labels)
-# remove y-tick = 120
 ax.set_yticks([0, 20, 40, 60, 80, 100])
 ax.set_title("Percentage of maximum AUC performance")
-
-# disable the x labels
 ax.set_xlabel("")
 plt.xticks(rotation=90)
 
@@ -799,115 +635,69 @@ plt.savefig(f"{figure_dir}/ROCAUC_violin_all_datasets.png", format="png", bbox_i
 plt.savefig(f"{figure_dir}/ROCAUC_violin_all_datasets.pdf", format="pdf", bbox_inches='tight')
 plt.show()
 #%% clustermap
-#Do clustering on percentage of performance, rather than straight AUC
 
-# Recreate the source dataset and column names based on your synthetic format
-synth_datasets_1 = [f"synthetic_2_{j}" for j in range(1, 13)]
-synth_datasets_2 = [f"synthetic_8_{j}" for j in range(1, 9)]
-synth_datasets = synth_datasets_1 + synth_datasets_2
-
-# Create the target LaTeX names (L_1 to L_12 and H_1 to H_8)
-target_columns_1 = [fr"$\mathit{{L_{{{j}}}}}$" for j in range(1, 13)]
-target_columns_2 = [fr"$\mathit{{H_{{{j}}}}}$" for j in range(1, 9)]
-target_columns = target_columns_1 + target_columns_2
-
-# Map Synthetic_i_j -> L_j / H_j
-column_mapping = dict(zip(synth_datasets, target_columns))
-
-# Extract and rename
-plot_df = metric_dfs["ROC/AUC"][synth_datasets].astype(float).rename(columns=column_mapping)
-
-# plot_df = metric_dfs["ROC/AUC"].astype(float)
-# rename DAD_Auto to DAD$_{Auto}$ in the index
-plot_df.rename(index={"DAD_Auto": "DAD$_{Auto}$"}, inplace=True)
-# clustermap = sns.clustermap(plot_df.transpose().iloc[:,:], method="average",metric="correlation", figsize=(15,15), cbar_pos=(1.055, 0.1, 0.03, 0.7))
-clustermap = sns.clustermap(plot_df.transpose().iloc[:,:], method="average", metric="correlation", figsize=(15,10), cbar_pos=(1.055, 0.1, 0.03, 0.7))
-
-clustermap.ax_cbar.tick_params(labelsize=26)
-
-# clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=18)
-# clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=18)
-
-clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=30, rotation=90)
-clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=20, rotation=0)  # Adjust rotation as needed
-
-clustermap.ax_heatmap.grid(False)
-
-# disable cluster connecting lines
-clustermap.ax_row_dendrogram.set_visible(False)
-clustermap.ax_col_dendrogram.set_visible(False)
-
-
-for label in clustermap.ax_heatmap.get_xticklabels():
-    if label.get_text() == "DAD" or label.get_text() == "DADS" or label.get_text() == "DAD$_{Auto}$":
-        label.set_fontweight('bold')  
+if dataset_mode == "synthetic":
+    synth_datasets_1 = [f"synthetic_2_{j}" for j in range(1, 13)]
+    synth_datasets_2 = [f"synthetic_8_{j}" for j in range(1, 9)]
+    synth_datasets = synth_datasets_1 + synth_datasets_2
+    target_columns_1 = [fr"$\mathit{{L_{{{j}}}}}$" for j in range(1, 13)]
+    target_columns_2 = [fr"$\mathit{{H_{{{j}}}}}$" for j in range(1, 9)]
+    target_columns = target_columns_1 + target_columns_2
+    column_mapping = dict(zip(synth_datasets, target_columns))
+    plot_df = metric_dfs["ROC/AUC"][synth_datasets].astype(float).rename(columns=column_mapping)
+    plot_df.rename(index={"DAD_Auto": "DAD$_{Auto}$"}, inplace=True)
+    clustermap = sns.clustermap(plot_df.transpose().iloc[:,:], method="average", metric="correlation", figsize=(15,10), cbar_pos=(1.055, 0.1, 0.03, 0.7))
+    clustermap.ax_cbar.tick_params(labelsize=26)
+    clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=30, rotation=90)
+    clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=20, rotation=0)  # Adjust rotation as needed
+    clustermap.ax_heatmap.grid(False)
+    clustermap.ax_row_dendrogram.set_visible(False)
+    clustermap.ax_col_dendrogram.set_visible(False)
+    for label in clustermap.ax_heatmap.get_xticklabels():
+        if label.get_text() == "DAD" or label.get_text() == "DAD$_{Auto}$":
+            label.set_fontweight('bold')  
+            label.set_fontsize(30)
+    for label in clustermap.ax_heatmap.get_yticklabels():
         label.set_fontsize(30)
+    clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.eps",format="eps", dpi=1000)
+    clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.png",format="png")
+    clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.pdf",format="pdf")
+    plt.show()
 
-# same font size for y-axis labels
-for label in clustermap.ax_heatmap.get_yticklabels():
-    label.set_fontsize(30)
+else:
 
-# rename DAD_Auto to DAD$_{Auto}$ in the x-axis labels
-# for label in clustermap.ax_heatmap.get_xticklabels():
-#     if label.get_text() == "DAD_Auto":
-#         label.set_text("DAD$_{Auto}$")
+    plot_df = metric_dfs["ROC/AUC"].astype(float)
+    cell_size = 16*3 
+    hcell_size = 12*16  
+    rows, cols = plot_df.shape
+    fig_width = cols * cell_size / 100 
+    fig_height = rows * hcell_size / 100
+    clustermap = sns.clustermap(
+        plot_df.transpose().iloc[:, :],
+        method="average",
+        metric="correlation",
+        figsize=(fig_width, fig_height),
+        cbar_pos=(1.13, 0.24, 0.02, 0.6),
+        dendrogram_ratio=(0.07, 0.07),  
+        colors_ratio=0.01, 
+        xticklabels=True,
+        yticklabels=True
+    )
 
-clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.eps",format="eps", dpi=1000)
-clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.png",format="png")
-clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.pdf",format="pdf")
-plt.show()
+    clustermap.ax_cbar.tick_params(labelsize=36)
+    clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=36, rotation=90)
+    clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=36, rotation=0)  # Adjust rotation as needed
+    for label in clustermap.ax_heatmap.get_xticklabels():
+        if label.get_text() == "DAD" or label.get_text() == "DAD$_{Auto}$":
+            label.set_fontweight('bold')  
+            label.set_fontsize(36)
 
-
-# cell_size = 16*3  # pixels per heatmap cell
-# hcell_size = 12*16  # pixels per heatmap cell height
-
-# rows, cols = plot_df.shape
-# fig_width = cols * cell_size / 100  # convert to inches
-# fig_height = rows * hcell_size / 100
-
-
-# clustermap = sns.clustermap(
-#     plot_df.transpose().iloc[:, :],
-#     method="average",
-#     metric="correlation",
-#     figsize=(fig_width, fig_height),
-#     cbar_pos=(1.13, 0.24, 0.02, 0.6),
-#     dendrogram_ratio=(0.07, 0.07),  # shrink row and column dendrograms
-#     colors_ratio=0.01,  # shrink space for colorbar if using col_colors/row_colors
-#     xticklabels=True,
-#     yticklabels=True
-# )
-
-# clustermap.ax_cbar.tick_params(labelsize=36)
-# # Rotate x-axis labels (already in your code)
-# clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=36, rotation=90)
-
-# # Rotate y-axis labels (updated line)
-# clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=36, rotation=0)  # Adjust rotation as needed
-# # check if xlabel name is DECODE then make it bold
-# for label in clustermap.ax_heatmap.get_xticklabels():
-#     if label.get_text() == "DAD" or label.get_text() == "DADS" or label.get_text() == "DAD_Auto":
-#         label.set_fontweight('bold')  
-#         label.set_fontsize(36)
-
-# # Save the figures
-# clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.eps",format="eps", dpi=1000)
-# clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.png",format="png")
-# clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.pdf",format="pdf")
-# plt.show()
+    clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.eps",format="eps", dpi=1000)
+    clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.png",format="png")
+    clustermap.savefig(f"{figure_dir}/clustermap_all_datasets.pdf",format="pdf")
+    plt.show()
 
 #%% Make heatmap/table showing significance results at p < 0.05, p < 0.10, p>=0.10
-#import matplotlib as mpl
-
-# cmap = sns.color_palette("flare")
-# cmap = mpl.cm.viridis
-# cmap = mpl.colors.ListedColormap(sns.color_palette("flare").as_hex())
-# cmap = mpl.colors.ListedColormap([[1,1,1], [0.4,0,0.4], [0,0,1]]).reversed()
-# bounds = [0, 0.05, 0.10, 1]
-# norm = mpl.colors.BoundaryNorm(bounds, cmap.N, extend='neither')
-
-# sns.heatmap(nemenyi_table[reordered_index_global].loc[reordered_index_global], cmap = cmap, norm=norm, cbar_kws={"label":"p-value"})
-# plt.show()
 
 significance_table = nemenyi_table.astype(str)
 
@@ -927,30 +717,6 @@ for method in nemenyi_table.columns:
         else:
             significance_table.loc[method,competing_method] = ""
             
-# significance_table = nemenyi_table.astype(str)
-
-# for method in nemenyi_table.columns:
-#     for competing_method in nemenyi_table.columns:
-#         if nemenyi_table[method].loc[competing_method] <= 0.10:
-#             if nemenyi_table[method].loc[competing_method] < 0.01:
-#                 if result_df["Mean Performance"][method] > result_df["Mean Performance"][competing_method]:
-#                     significance_table.loc[method,competing_method] = "+++"
-#                 else:
-#                     significance_table.loc[method,competing_method] = "-{}-{}-"
-#             elif nemenyi_table[method].loc[competing_method] < 0.05:
-#                 if result_df["Mean Performance"][method] > result_df["Mean Performance"][competing_method]:
-#                     significance_table.loc[method,competing_method] = "++"
-#                 else:
-#                     significance_table.loc[method,competing_method] = "-{}-"
-#             else:
-#                 if result_df["Mean Performance"][method] > result_df["Mean Performance"][competing_method]:
-#                     significance_table.loc[method,competing_method] = "+"
-#                 else:
-#                     significance_table.loc[method,competing_method] = "-"
-#         else:
-#             significance_table.loc[method,competing_method] = ""
-            
-   
 
 significance_table = significance_table[reversed(reordered_index_all)].loc[reordered_index_all]
 significance_table["Mean AUC"] = result_df["Mean Performance"].map(lambda x: f"{x:.4f}")
@@ -963,16 +729,6 @@ significance_table.columns = significance_table.columns.map(lambda x: x.replace(
 table_file = open(f"{table_dir}/nemenyi_summary.tex","w")
 significance_table.to_latex(table_file)
 table_file.close()
-
-# significance_table_truncated = significance_table.loc[:, (significance_table == "++").any() | (significance_table == "+").any()]
-# significance_table_truncated["Mean Performance"] = score_df.transpose().mean().astype(float).sort_values(ascending=False).round(3)
-# significance_table_truncated["Mean Performance"] = score_df.transpose().mean().sort_values(ascending=False).round(3)
-# table_file = open(f"{table_dir}/nemenyi_summary_truncated.tex","w")
-# column_format = "l" + "c"*(len(significance_table_truncated.columns)-1) +"|r"
-# header = ["\\rot{"+column+"}" for column in significance_table_truncated.columns[:-1]] + ["\\rot{\\shortstack[l]{\\textbf{Mean}\\\\\\textbf{AUC}}}"]
-# significance_table_truncated.to_latex(table_file, column_format=column_format, header=header, escape=False)
-# table_file.close()
-
 
 #%% Redo nemenyi test and pairwise testing based on the clustering
 
@@ -1035,60 +791,94 @@ result_df.to_latex(table_file)
 table_file.close()
 
 #%% Make boxplot for local datasets
-scaled_df = score_df/score_df.max()*100
 
-reordered_index_local = score_df.transpose().mean().sort_values(ascending=False).index
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
+# --- Data Preparation ---
+# scaled_df = (score_df / score_df.max()) * 100
+scaled_df = score_df
+reordered_index_local = (
+    score_df.transpose().mean().sort_values(ascending=False).index.to_list()
+)
 
-plot_df = (scaled_df).melt(var_name="dataset", ignore_index=False).reset_index().rename(columns={"index":"method"})
-plt.figure()
-ax = sns.boxplot(x="method",y="value",data=plot_df, order=reordered_index_local, palette=palette)
-labels = ax.get_xticklabels()
-for label in labels:
-    if label.get_text() == "DAD" or label.get_text() == "DADS":
-        label.set_fontweight('bold')  
-        label.set_fontsize(12)        
-ax.set_xticklabels(labels)
-ax.set_title("Percentage of maximum AUC performance")
-ax.set_yticks([0, 20, 40, 60, 80, 100])
+plot_df = (
+    scaled_df.melt(var_name="dataset", ignore_index=False)
+    .reset_index()
+    .rename(columns={"index": "method"})
+)
 
-# disable the x labels
+palette = dict(
+    zip(
+        reordered_index_local,
+        sns.color_palette("husl", n_colors=len(reordered_index_local)),
+    )
+)
+
+# --- Plot Setup ---
+fig, ax = plt.subplots(1, 1, figsize=(8.6, 3.0))
+sns.reset_orig()
+sns.set_style("white")
+
+ax.set_facecolor("white")
+# Create the boxplot (Updated to fix the palette & hue warning)
+ax = sns.boxplot(
+    x="method",
+    y="value",
+    data=plot_df,
+    order=reordered_index_local,
+    hue="method",  # <-- Fixes the FutureWarning
+    palette=palette,
+    legend=False,  # <-- Prevents a huge duplicate legend
+    showfliers=False,
+    meanprops=dict(color="k", linestyle="--"),
+    showmeans=True,
+    meanline=True,
+    ax=ax,
+)
+
+for spine in ["top", "bottom", "left", "right"]:
+    ax.spines[spine].set_visible(True)
+    ax.spines[spine].set_color("black")
+    ax.spines[spine].set_linewidth(1.0)  # Adjust thickness if desired
+
+new_labels = ["DAD$_{Auto}$" if label == "DAD_Auto" else label for label in reordered_index_local
+]
+plt.xticks(
+    ticks=range(len(reordered_index_local)),
+    labels=new_labels,
+    rotation=90,
+    fontsize=12,
+)
+for tick in ax.get_xticklabels():
+    if tick.get_text() in ["DAD", "DAD$_{Auto}$"]:
+        tick.set_fontweight("bold")
+
 ax.set_xlabel("")
 
-plt.xticks(rotation=90)
-plt.tight_layout()
-plt.savefig(f"{figure_dir}/ROCAUC_boxplot_local_datasets.eps",format="eps")
-plt.savefig(f"{figure_dir}/ROCAUC_boxplot_local_datasets.png",format="png")
-plt.savefig(f"{figure_dir}/ROCAUC_boxplot_local_datasets.pdf",format="pdf")
+plt.ylabel("AUC", fontsize=12)
+
+plt.savefig(
+    f"{figure_dir}/ROCAUC_boxplot_local_datasets.eps",
+    format="eps",
+    bbox_inches="tight",
+    facecolor="white",
+)
+plt.savefig(
+    f"{figure_dir}/ROCAUC_boxplot_local_datasets.png",
+    format="png",
+    bbox_inches="tight",
+    facecolor="white",
+)
+plt.savefig(
+    f"{figure_dir}/ROCAUC_boxplot_local_datasets.pdf",
+    format="pdf",
+    bbox_inches="tight",
+    facecolor="white",
+)
 plt.show()
 
-# plt.figure()
-# palette = dict(zip(reordered_index_local, sns.color_palette("husl", n_colors=len(reordered_index_local))))
-# ax = sns.violinplot(x="method", y="value", data=plot_df, order=reordered_index_local, palette=palette, inner=None)
-# sns.stripplot(x="method", y="value", data=plot_df, order=reordered_index_local, color="black", size=2, alpha=0.35, ax=ax)
-# labels = ax.get_xticklabels()
-# for label in labels:
-#     if label.get_text() == "DAD" or label.get_text() == "DADS":
-#         label.set_fontweight('bold')
-#         label.set_fontsize(12)
-# ax.set_xticklabels(labels)
-# ax.set_title("Percentage of maximum AUC performance")
-# plt.xticks(rotation=90)
-# plt.tight_layout()
-# plt.savefig(f"{figure_dir}/ROCAUC_violin_local_datasets.eps", format="eps")
-# plt.savefig(f"{figure_dir}/ROCAUC_violin_local_datasets.png", format="png")
-# plt.savefig(f"{figure_dir}/ROCAUC_violin_local_datasets.pdf", format="pdf")
-# plt.show()
-
-# plt.figure()
-# palette = dict(zip(reordered_index_local, sns.color_palette("husl", n_colors=len(reordered_index_local))))
-# ax = sns.violinplot(x="method", y="value", data=plot_df, order=reordered_index_local, palette=palette, inner=None)
-# sns.stripplot(x="method", y="value", data=plot_df, order=reordered_index_local, color="black", size=2, alpha=0.35, ax=ax)
-# counts = plot_df[plot_df['value'] == 100]['method'].value_counts().reindex(reordered_index_local, fill_value=0)
-# for i, method in enumerate(reordered_index_local):
-#     count = counts[method]
-#     ax.text(i, 115, f'{count}', ha='right', va='bottom', fontsize=10, color='blue')
 
 fig, ax = plt.subplots(figsize=(6, 3))
 
@@ -1116,7 +906,7 @@ for i, method in enumerate(reordered_index_local):
 
 labels = ax.get_xticklabels()
 for label in labels:
-    if label.get_text() == "DAD" or label.get_text() == "DADS":
+    if label.get_text() == "DAD" or label.get_text() == "DAD$_{Auto}$":
         label.set_fontweight('bold')
         label.set_fontsize(12)
 ax.set_xticklabels(labels)
@@ -1135,26 +925,11 @@ plt.show()
 #%%
 plot_df = metric_dfs["ROC/AUC"][local_datasets].astype(float)
 
-# clustermap = sns.clustermap(plot_df.transpose().iloc[:,:], method="average",metric="correlation", figsize=(15,15), cbar_pos=(1.055, 0.1, 0.03, 0.7))
-
-# clustermap.ax_cbar.tick_params(labelsize=26)
-
-# # clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=18)
-# # clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=18)
-
-# clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=30, rotation=90)
-# clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=20, rotation=0)  # Adjust rotation as needed
-
-# for label in clustermap.ax_heatmap.get_xticklabels():
-#     if label.get_text() == "DAD" or label.get_text() == "DADS" or label.get_text() == "DAD_Auto":
-#         label.set_fontweight('bold')  
-#         label.set_fontsize(30)
-
-cell_size = 16*4  # pixels per heatmap cell
-hcell_size = 12*4  # pixels per heatmap cell height
+cell_size = 16*4  
+hcell_size = 12*4  
 
 rows, cols = plot_df.shape
-fig_width = cols * cell_size / 100  # convert to inches
+fig_width = cols * cell_size / 100
 fig_height = rows * hcell_size / 100
 
 
@@ -1164,21 +939,18 @@ clustermap = sns.clustermap(
     metric="correlation",
     figsize=(fig_width, fig_height),
     cbar_pos=(1.1, 0.24, 0.02, 0.6),
-    dendrogram_ratio=(0.07, 0.07),  # shrink row and column dendrograms
-    colors_ratio=0.01,  # shrink space for colorbar if using col_colors/row_colors
+    dendrogram_ratio=(0.07, 0.07), 
+    colors_ratio=0.01, 
     xticklabels=True,
     yticklabels=True
 )
 
 clustermap.ax_cbar.tick_params(labelsize=22)
-# Rotate x-axis labels (already in your code)
 clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=22, rotation=90)
 
-# Rotate y-axis labels (updated line)
 clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=22, rotation=0)  # Adjust rotation as needed
-# check if xlabel name is DECODE then make it bold
 for label in clustermap.ax_heatmap.get_xticklabels():
-    if label.get_text() == "DAD" or label.get_text() == "DADS":
+    if label.get_text() == "DAD" or label.get_text() == "DAD$_{Auto}$":
         label.set_fontweight('bold')  
         label.set_fontsize(22)
 
@@ -1188,18 +960,6 @@ clustermap.savefig(f"{figure_dir}/clustermap_local_datasets.png",format="png")
 clustermap.savefig(f"{figure_dir}/clustermap_local_datasets.pdf",format="pdf")
 plt.show()
 #%% Make heatmap/table showing significance results at p < 0.05, p < 0.10, p>=0.10
-#import matplotlib as mpl
-
-# cmap = sns.color_palette("flare")
-# cmap = mpl.cm.viridis
-# cmap = mpl.colors.ListedColormap(sns.color_palette("flare").as_hex())
-# cmap = mpl.colors.ListedColormap([[1,1,1], [0.4,0,0.4], [0,0,1]]).reversed()
-# bounds = [0, 0.05, 0.10, 1]
-# norm = mpl.colors.BoundaryNorm(bounds, cmap.N, extend='neither')
-
-# sns.heatmap(nemenyi_table[reordered_index_global].loc[reordered_index_global], cmap = cmap, norm=norm, cbar_kws={"label":"p-value"})
-# plt.show()
-
 significance_table = nemenyi_table.astype(str)
 
 for method in nemenyi_table.columns:
@@ -1217,31 +977,8 @@ for method in nemenyi_table.columns:
                     significance_table.loc[method,competing_method] = "-"
         else:
             significance_table.loc[method,competing_method] = ""
-            
-
-# for method in nemenyi_table.columns:
-#     for competing_method in nemenyi_table.columns:
-#         if nemenyi_table[method].loc[competing_method] <= 0.10:
-#             if nemenyi_table[method].loc[competing_method] < 0.01:
-#                 if result_df["Mean Performance"][method] > result_df["Mean Performance"][competing_method]:
-#                     significance_table.loc[method,competing_method] = "+++"
-#                 else:
-#                     significance_table.loc[method,competing_method] = "-{}-{}-"
-#             elif nemenyi_table[method].loc[competing_method] < 0.05:
-#                 if result_df["Mean Performance"][method] > result_df["Mean Performance"][competing_method]:
-#                     significance_table.loc[method,competing_method] = "++"
-#                 else:
-#                     significance_table.loc[method,competing_method] = "-{}-"
-#             else:
-#                 if result_df["Mean Performance"][method] > result_df["Mean Performance"][competing_method]:
-#                     significance_table.loc[method,competing_method] = "+"
-#                 else:
-#                     significance_table.loc[method,competing_method] = "-"
-#         else:
-#             significance_table.loc[method,competing_method] = ""
-            
+                       
    
-
 significance_table = significance_table[reversed(reordered_index_local)].loc[reordered_index_local]
 significance_table["Mean AUC"] = result_df["Mean Performance"].map(lambda x: f"{x:.4f}")
 significance_table.index = significance_table.index.map(lambda x: x.replace("_", "\\_"))
@@ -1291,8 +1028,6 @@ nemenyi_formatted.to_latex(f"{table_dir}/nemenyi_table_global.tex", hrules=True)
 #table_file.close()
 
 
-
-
 #%% Make table summarizing significance and performance results for global datasets
 
 p_value_threshold = 0.05
@@ -1322,55 +1057,94 @@ result_df.to_latex(table_file)
 table_file.close()
 
 #%% Make boxplot for global datasets
-scaled_df = score_df/score_df.max()*100
 
-reordered_index_global = score_df.transpose().mean().sort_values(ascending=False).index
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-#scaled_df = scaled_df.loc[reordered_index]
 
-plot_df = (scaled_df).melt(var_name="dataset", ignore_index=False).reset_index().rename(columns={"index":"method"})
-plt.figure()
-ax = sns.boxplot(x="method",y="value",data=plot_df, order=reordered_index_global, palette=palette)
-ax.set_title("Percentage of maximum AUC performance")
-labels = ax.get_xticklabels()
-for label in labels:
-    if label.get_text() == "DAD" or label.get_text() == "DADS":
-        label.set_fontweight('bold')  
-        label.set_fontsize(12)       
-ax.set_xticklabels(labels)
-plt.xticks(rotation=90)
-plt.tight_layout()
-plt.savefig(f"{figure_dir}/ROCAUC_boxplot_global_datasets.eps",format="eps")
-plt.savefig(f"{figure_dir}/ROCAUC_boxplot_global_datasets.png",format="png")
-plt.savefig(f"{figure_dir}/ROCAUC_boxplot_global_datasets.pdf",format="pdf")
+# --- Data Preparation ---
+scaled_df = score_df
+reordered_index_global = (
+    score_df.transpose().mean().sort_values(ascending=False).index.to_list()
+)
+
+plot_df = (
+    scaled_df.melt(var_name="dataset", ignore_index=False)
+    .reset_index()
+    .rename(columns={"index": "method"})
+)
+
+palette = dict(
+    zip(
+        reordered_index_global,
+        sns.color_palette("husl", n_colors=len(reordered_index_global)),
+    )
+)
+
+# --- Plot Setup ---
+fig, ax = plt.subplots(1, 1, figsize=(8.6, 3.0))
+sns.reset_orig()
+sns.set_style("white")
+
+ax.set_facecolor("white")
+# Create the boxplot (Updated to fix the palette & hue warning)
+ax = sns.boxplot(
+    x="method",
+    y="value",
+    data=plot_df,
+    order=reordered_index_global,
+    hue="method",  # <-- Fixes the FutureWarning
+    palette=palette,
+    legend=False,  # <-- Prevents a huge duplicate legend
+    showfliers=False,
+    meanprops=dict(color="k", linestyle="--"),
+    showmeans=True,
+    meanline=True,
+    ax=ax,
+)
+
+for spine in ["top", "bottom", "left", "right"]:
+    ax.spines[spine].set_visible(True)
+    ax.spines[spine].set_color("black")
+    ax.spines[spine].set_linewidth(1.0)  # Adjust thickness if desired
+
+new_labels = ["DAD$_{Auto}$" if label == "DAD_Auto" else label for label in reordered_index_global
+]
+plt.xticks(
+    ticks=range(len(reordered_index_global)),
+    labels=new_labels,
+    rotation=90,
+    fontsize=12,
+)
+for tick in ax.get_xticklabels():
+    if tick.get_text() in ["DAD", "DAD$_{Auto}$"]:
+        tick.set_fontweight("bold")
+
+ax.set_xlabel("")
+
+plt.ylabel("AUC", fontsize=12)
+
+plt.savefig(
+    f"{figure_dir}/ROCAUC_boxplot_global_datasets.eps",
+    format="eps",
+    bbox_inches="tight",
+    facecolor="white",
+)
+plt.savefig(
+    f"{figure_dir}/ROCAUC_boxplot_global_datasets.png",
+    format="png",
+    bbox_inches="tight",
+    facecolor="white",
+)
+plt.savefig(
+    f"{figure_dir}/ROCAUC_boxplot_global_datasets.pdf",
+    format="pdf",
+    bbox_inches="tight",
+    facecolor="white",
+)
 plt.show()
 
-# plt.figure()
-# palette = dict(zip(reordered_index_global, sns.color_palette("husl", n_colors=len(reordered_index_global))))
-# ax = sns.violinplot(x="method", y="value", data=plot_df, order=reordered_index_global, palette=palette, inner=None)
-# sns.stripplot(x="method", y="value", data=plot_df, order=reordered_index_global, color="black", size=2, alpha=0.35, ax=ax)
-# labels = ax.get_xticklabels()
-# for label in labels:
-#     if label.get_text() == "DAD" or label.get_text() == "DADS":
-#         label.set_fontweight('bold')
-#         label.set_fontsize(12)
-# ax.set_xticklabels(labels)
-# ax.set_title("Percentage of maximum AUC performance")
-# plt.xticks(rotation=90)
-# plt.tight_layout()
-# plt.savefig(f"{figure_dir}/ROCAUC_violin_global_datasets.eps", format="eps")
-# plt.savefig(f"{figure_dir}/ROCAUC_violin_global_datasets.png", format="png")
-# plt.savefig(f"{figure_dir}/ROCAUC_violin_global_datasets.pdf", format="pdf")
-# plt.show()
 
-# plt.figure()
-# palette = dict(zip(reordered_index_global, sns.color_palette("husl", n_colors=len(reordered_index_global))))
-# ax = sns.violinplot(x="method", y="value", data=plot_df, order=reordered_index_global, palette=palette, inner=None)
-# sns.stripplot(x="method", y="value", data=plot_df, order=reordered_index_global, color="black", size=2, alpha=0.35, ax=ax)
-# counts = plot_df[plot_df['value'] == 100]['method'].value_counts().reindex(reordered_index_global, fill_value=0)
-# for i, method in enumerate(reordered_index_global):
-#     count = counts[method]
-#     ax.text(i, 115, f'{count}', ha='right', va='bottom', fontsize=10, color='blue')
 
 fig, ax = plt.subplots(figsize=(6, 3))
 
@@ -1398,7 +1172,7 @@ for i, method in enumerate(reordered_index_global):
 
 labels = ax.get_xticklabels()
 for label in labels:
-    if label.get_text() == "DAD" or label.get_text() == "DADS":
+    if label.get_text() == "DAD" or label.get_text() == "DAD$_{Auto}$":
         label.set_fontweight('bold')
         label.set_fontsize(12)
 ax.set_xticklabels(labels)
@@ -1417,26 +1191,11 @@ plt.show()
 #%%
 plot_df = metric_dfs["ROC/AUC"].drop(columns=local_datasets + non_cluster_datasets).astype(float)
 
-# clustermap = sns.clustermap(plot_df.transpose().iloc[:,:], method="average",metric="correlation", figsize=(15,15), cbar_pos=(1.055, 0.1, 0.03, 0.7))
-
-# clustermap.ax_cbar.tick_params(labelsize=26)
-
-# # clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=18)
-# # clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=18)
-
-# clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=30, rotation=90)
-# clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=20, rotation=0)  # Adjust rotation as needed
-
-# for label in clustermap.ax_heatmap.get_xticklabels():
-#     if label.get_text() == "DAD" or label.get_text() == "DADS" or label.get_text() == "DAD_Auto":
-#         label.set_fontweight('bold')  
-#         label.set_fontsize(30)
-
-cell_size = 16*3  # pixels per heatmap cell
-hcell_size = 12*7  # pixels per heatmap cell height
+cell_size = 16*3  
+hcell_size = 12*7  
 
 rows, cols = plot_df.shape
-fig_width = cols * cell_size / 100  # convert to inches
+fig_width = cols * cell_size / 100 
 fig_height = rows * hcell_size / 100
 
 
@@ -1446,21 +1205,17 @@ clustermap = sns.clustermap(
     metric="correlation",
     figsize=(fig_width, fig_height),
     cbar_pos=(1.13, 0.24, 0.02, 0.6),
-    dendrogram_ratio=(0.07, 0.07),  # shrink row and column dendrograms
-    colors_ratio=0.01,  # shrink space for colorbar if using col_colors/row_colors
+    dendrogram_ratio=(0.07, 0.07),  
+    colors_ratio=0.01, 
     xticklabels=True,
     yticklabels=True
 )
 
 clustermap.ax_cbar.tick_params(labelsize=28)
-# Rotate x-axis labels (already in your code)
 clustermap.ax_heatmap.set_xticklabels(clustermap.ax_heatmap.get_xticklabels(), fontsize=28, rotation=90)
-
-# Rotate y-axis labels (updated line)
 clustermap.ax_heatmap.set_yticklabels(clustermap.ax_heatmap.get_yticklabels(), fontsize=28, rotation=0)  # Adjust rotation as needed
-# check if xlabel name is DECODE then make it bold
 for label in clustermap.ax_heatmap.get_xticklabels():
-    if label.get_text() == "DAD" or label.get_text() == "DADS":
+    if label.get_text() == "DAD" or label.get_text() == "DAD$_{Auto}$":
         label.set_fontweight('bold')  
         label.set_fontsize(28)
 
@@ -1471,17 +1226,6 @@ clustermap.savefig(f"{figure_dir}/clustermap_global_datasets.pdf",format="pdf")
 plt.show()
 
 #%% Make heatmap/table showing significance results at p < 0.05, p < 0.10, p>=0.10
-#import matplotlib as mpl
-
-# cmap = sns.color_palette("flare")
-# cmap = mpl.cm.viridis
-# cmap = mpl.colors.ListedColormap(sns.color_palette("flare").as_hex())
-# cmap = mpl.colors.ListedColormap([[1,1,1], [0.4,0,0.4], [0,0,1]]).reversed()
-# bounds = [0, 0.05, 0.10, 1]
-# norm = mpl.colors.BoundaryNorm(bounds, cmap.N, extend='neither')
-
-# sns.heatmap(nemenyi_table[reordered_index_global].loc[reordered_index_global], cmap = cmap, norm=norm, cbar_kws={"label":"p-value"})
-# plt.show()
 
 significance_table = nemenyi_table.astype(str)
 
@@ -1501,28 +1245,7 @@ for method in nemenyi_table.columns:
         else:
             significance_table.loc[method,competing_method] = ""
 
-# for method in nemenyi_table.columns:
-#     for competing_method in nemenyi_table.columns:
-#         if nemenyi_table[method].loc[competing_method] <= 0.10:
-#             if nemenyi_table[method].loc[competing_method] < 0.01:
-#                 if result_df["Mean Performance"][method] > result_df["Mean Performance"][competing_method]:
-#                     significance_table.loc[method,competing_method] = "+++"
-#                 else:
-#                     significance_table.loc[method,competing_method] = "-{}-{}-"
-#             elif nemenyi_table[method].loc[competing_method] < 0.05:
-#                 if result_df["Mean Performance"][method] > result_df["Mean Performance"][competing_method]:
-#                     significance_table.loc[method,competing_method] = "++"
-#                 else:
-#                     significance_table.loc[method,competing_method] = "-{}-"
-#             else:
-#                 if result_df["Mean Performance"][method] > result_df["Mean Performance"][competing_method]:
-#                     significance_table.loc[method,competing_method] = "+"
-#                 else:
-#                     significance_table.loc[method,competing_method] = "-"
-#         else:
-#             significance_table.loc[method,competing_method] = ""
-            
-               
+       
 
 significance_table = significance_table[reversed(reordered_index_global)].loc[reordered_index_global]
 significance_table["Mean AUC"] = result_df["Mean Performance"].map(lambda x: f"{x:.4f}")
@@ -1789,8 +1512,8 @@ def graph_ranks(avranks, names, p_values, cd=None, cdmethod=None, lowv=None, hig
              linewidth=linewidth)
 
         color = 'k'
-        text(textspace - 0.2, chei, filter_names(nnames[i]), color=color, ha="right", va="center", size=16)
-        # text(textspace - 0.2, chei, filter_names(name_mapping[nnames[i]] if nnames[i] in name_mapping.keys() else nnames[i]), color=color, ha="right", va="center", size=16)
+        # text(textspace - 0.2, chei, filter_names(nnames[i]), color=color, ha="right", va="center", size=16)
+        text(textspace - 0.2, chei, filter_names(nnames[i]), color=color, ha="right", va="center", size=16, weight="bold" if nnames[i] in ["DAD$_{Auto}$", "DAD"] else False)
 
 
     # Format for the second half of algorithms
@@ -1802,7 +1525,9 @@ def graph_ranks(avranks, names, p_values, cd=None, cdmethod=None, lowv=None, hig
              linewidth=linewidth)
 
         color = 'k'
-        text(textspace + scalewidth + 0.2, chei, filter_names(nnames[i]), color=color, ha="left", va="center", size=16)
+        # text(textspace + scalewidth + 0.2, chei, filter_names(nnames[i]), color=color, ha="left", va="center", size=16)
+        text(textspace + scalewidth + 0.2, chei, filter_names(nnames[i]), color=color, ha="left", va="center", size=16, weight="bold" if nnames[i] in ["DAD$_{Auto}$", "DAD"] else False)
+
         # text(textspace + scalewidth + 0.2, chei, filter_names(name_mapping[nnames[i]] if nnames[i] in name_mapping.keys() else nnames[i]), color=color, ha="left", va="center", size=16)
         
 
